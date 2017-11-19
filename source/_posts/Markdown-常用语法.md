@@ -1,7 +1,9 @@
 ---
 title: Markdown-常用语法
 date: 2017-11-15 19:49:19
-tags: markdown
+tags: [markdown,emoji]
+category: markdown
+comments: true
 ---
 本篇文章简要介绍常用的Markdown语法，方便快速查阅。
 

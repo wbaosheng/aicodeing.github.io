@@ -352,8 +352,8 @@ baidu_analytics: 67f1e533d19b5b095ebcd8f0cd066001
 
 # Disqus
 disqus:
-  enable: false
-  shortname:
+  enable: true
+  shortname: AiCoding Team
   count: true
 
 # Hypercomments
@@ -393,16 +393,16 @@ valine:
 # Introduction: https://imsun.net/posts/gitment-introduction/
 # You can get your Github ID from https://api.github.com/users/<Github username>
 gitment:
-  enable: false
+  enable: true
   mint: true # RECOMMEND, A mint on Gitment, to support count, language and proxy_gateway
   count: true # Show comments count in post meta area
   lazy: false # Comments lazy loading with a button
   cleanly: false # Hide 'Powered by ...' on footer, and more
   language: # Force language, or auto switch by theme
-  github_user: # MUST HAVE, Your Github ID
-  github_repo: # MUST HAVE, The repo you use to store Gitment comments
-  client_id: # MUST HAVE, Github client id for the Gitment
-  client_secret: # EITHER this or proxy_gateway, Github access secret token for the Gitment
+  github_user: AICodeing # MUST HAVE, Your Github ID
+  github_repo: https://github.com/AICodeing/aicodeing.github.io.git # MUST HAVE, The repo you use to store Gitment comments
+  client_id: 2b6564f27ad896e39734 # MUST HAVE, Github client id for the Gitment
+  client_secret: b6a54de8ebfbb66b9ed5226c3785c720f8fb7a60 # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
 
