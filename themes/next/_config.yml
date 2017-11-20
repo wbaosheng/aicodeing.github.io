@@ -352,14 +352,14 @@ baidu_analytics: 67f1e533d19b5b095ebcd8f0cd066001
 
 # Disqus
 disqus:
-  enable: true
+  enable: false
   shortname: AiCoding Team
   count: true
 
 commenthub:
   enable: true
   id: 5436710
-  site: https://aicodeing.github.io/
+  site: https://aicodeing.github.io
 # Hypercomments
 #hypercomments_id:
 
