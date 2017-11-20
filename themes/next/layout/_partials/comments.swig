@@ -65,6 +65,11 @@
   {% elseif theme.valine.appid and theme.valine.appkey %}
     <div class="comments" id="comments">
     </div>
+
+  {% elseif theme.commenthub.enable %}
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
   {% endif %}
 
 {% endif %}
