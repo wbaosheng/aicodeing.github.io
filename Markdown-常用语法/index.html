@@ -341,6 +341,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/Markdown-常用语法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/Markdown-常用语法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -554,6 +564,14 @@ alt 和 title 都可以省略
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
 
   
 
@@ -850,21 +868,52 @@ alt 和 title 都可以省略
 
 
 
-
-
-
-
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
 
     
-        <script type="text/javascript">
-          var commenthub_id = '5436710';
-         var commenthub_website = 'https://aicodeing.github.io';
-          var commenthub_identifier = 'Markdown-常用语法/';
-          var commenthub_url = 'http://aicodeing.github.io/Markdown-常用语法/';
-          var commenthub_title = 'Markdown-常用语法';
-              dsq.src = 'https://commenthub.herokuapp.com/js/embed.js';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        </script>
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'AICodeing',
+            repo: 'https://github.com/AICodeing/aicodeing.github.io.git',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'b6a54de8ebfbb66b9ed5226c3785c720f8fb7a60',
+            
+                client_id: '2b6564f27ad896e39734'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+
     
   
 
