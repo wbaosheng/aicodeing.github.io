@@ -357,7 +357,7 @@ disqus:
   count: true
 
 commenthub:
-  enable: false
+  enable: true
   id: 5436710
   site: https://aicodeing.github.io
 # Hypercomments
