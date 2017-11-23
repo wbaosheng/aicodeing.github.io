@@ -34,6 +34,15 @@ keywords: "Hexo, NexT"
 # Set rss to specific value if you have burned your feed already.
 rss:
 
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+
 footer:
   # Specify the date when the site was setup.
   # If not defined, current year will be used.
@@ -118,12 +127,12 @@ scheme: Pisces
 # Key is the link label showing to end users.
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
-#social:
-  #GitHub: https://github.com/yourname || github
-  #E-Mail: mailto:yourname@gmail.com || envelope
+social:
+  GitHub: https://github.com/aicodeing || github
+  E-Mail: mailto:gerenvip@gmail.com || email
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
-  #FB Page: https://www.facebook.com/yourname || facebook
+  #FB Page: https://www.facebook.com/gerenvip || facebook
   #VK Group: https://vk.com/yourname || vk
   #StackOverflow: https://stackoverflow.com/yourname || stack-overflow
   #YouTube: https://youtube.com/yourname || youtube
@@ -234,8 +243,8 @@ post_wordcount:
   #description: ex. subscribe to my blog by scanning my public wechat account
 
 # Reward
-#reward_comment: Donate comment here
-#wechatpay: /images/wechatpay.jpg
+reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+wechatpay: /images/wechatpay.png
 #alipay: /images/alipay.jpg
 #bitcoin: /images/bitcoin.png
 
@@ -285,7 +294,7 @@ highlight_theme: normal
 # Arial | Tahoma | Helvetica | Times New Roman | Courier New | Verdana | Georgia | Palatino | Garamond | Comic Sans MS | Trebuchet MS
 # ---------------------------------------------------------------
 font:
-  enable: false
+  enable: true
 
   # Uri of fonts host. E.g. //fonts.googleapis.com (Default).
   host:
@@ -298,14 +307,14 @@ font:
   # Global font settings used on <body> element.
   global:
     external: true
-    family: Lato
+    family: Monda
     size:
 
   # Font settings for Headlines (h1, h2, h3, h4, h5, h6).
   # Fallback to `global` font settings.
   headings:
     external: true
-    family:
+    family: Roboto Slab
     size:
 
   # Font settings for posts.
@@ -318,13 +327,13 @@ font:
   # Fallback to `global` font settings.
   logo:
     external: true
-    family:
-    size:
+    family: Lobster Two
+    size: 24
 
   # Font settings for <code> and code blocks.
   codes:
     external: true
-    family:
+    family: PT Mono
     size:
 
 
