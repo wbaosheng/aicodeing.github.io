@@ -131,12 +131,12 @@
 <meta property="og:title" content="Android属性动画分析概略">
 <meta property="og:url" content="http://aicodeing.github.io/Android属性动画分析概略/index.html">
 <meta property="og:site_name" content="AICoding Technical Blog">
-<meta property="og:description" content="属性动画分析概略Android 动画分三类:Drawable Animation:几帧图循环播放；View Animation : 只有基本的 缩放，平移，旋转，渐变，通过对 Canvas 操作来实现。只在绘制层做了动画假象，实际属性并未改变ValueAnimator:属性动画，可以实现更平滑的动画和对属性的变更。 我将从以下几个方面分析 属性动画的实现原理 1.通过常用ObjectAnimato">
+<meta property="og:description" content="属性动画分析概略Android 动画分三类:Drawable Animation:几帧图循环播放；View Animation : 只有基本的 缩放，平移，旋转，渐变，通过对 Canvas 操作来实现。只在绘制层做了动画假象，实际属性并未改变ValueAnimator:属性动画，可以实现更平滑的动画和对属性的变更。 我将从以下几个方面分析 属性动画的实现原理    通过常用 ObjectAnima">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-26T04:34:46.000Z">
+<meta property="og:updated_time" content="2017-11-26T04:38:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android属性动画分析概略">
-<meta name="twitter:description" content="属性动画分析概略Android 动画分三类:Drawable Animation:几帧图循环播放；View Animation : 只有基本的 缩放，平移，旋转，渐变，通过对 Canvas 操作来实现。只在绘制层做了动画假象，实际属性并未改变ValueAnimator:属性动画，可以实现更平滑的动画和对属性的变更。 我将从以下几个方面分析 属性动画的实现原理 1.通过常用ObjectAnimato">
+<meta name="twitter:description" content="属性动画分析概略Android 动画分三类:Drawable Animation:几帧图循环播放；View Animation : 只有基本的 缩放，平移，旋转，渐变，通过对 Canvas 操作来实现。只在绘制层做了动画假象，实际属性并未改变ValueAnimator:属性动画，可以实现更平滑的动画和对属性的变更。 我将从以下几个方面分析 属性动画的实现原理    通过常用 ObjectAnima">
 
 
 
@@ -420,8 +420,14 @@
 
       
         <h3 id="属性动画分析概略"><a href="#属性动画分析概略" class="headerlink" title="属性动画分析概略"></a>属性动画分析概略</h3><p>Android 动画分三类:<br><code>Drawable Animation</code>:几帧图循环播放；<br><code>View Animation</code> : 只有基本的 <code>缩放</code>，<code>平移</code>，<code>旋转</code>，<code>渐变</code>，通过对 <code>Canvas</code> 操作来实现。只在绘制层做了动画假象，实际属性并未改变<br><code>ValueAnimator</code>:属性动画，可以实现更平滑的动画和对属性的变更。</p>
-<p>我将从以下几个方面分析 属性动画的实现原理</p>
-<p>1.通过常用<code>ObjectAnimator.of..</code>方法切入，深入分析 <code>PropertyValueHolder</code>,<code>Property</code>,<code>Keyframe</code>的实现原理和作用。<br>2.通过对属性动画的启动方式的解析 代入 Android 新的渲染方式(黄油计划)<br>3.属性动画其他常用API的使用<br>4.<code>ValueAnimator</code>和<code>ObjectAnimator</code>的关系以及如何选择<br>5.高级的属性动画自定义方式。例如自定义<code>PropertyValueHolder</code>和自定义<code>keygrame</code>实现属性动画效果。  </p>
+<p>我将从以下几个方面分析 属性动画的实现原理  </p>
+<ol>
+<li>通过常用 <code>ObjectAnimator.of..</code> 方法切入,深入分析 <code>PropertyValueHolder</code>,<code>Property</code>,<code>Keyframe</code>的实现原理和作用。    </li>
+<li>通过对属性动画的启动方式的解析 代入 Android 新的渲染方式(黄油计划)  </li>
+<li>属性动画其他常用API的使用  </li>
+<li><code>ValueAnimator</code>和<code>ObjectAnimator</code>的关系以及如何选择  </li>
+<li>高级的属性动画自定义方式。例如自定义<code>PropertyValueHolder</code>和自定义<code>keygrame</code>实现属性动画效果。  </li>
+</ol>
 <p>针对源码分析,前三篇文章会涉及的多一些，也更能体会到Android属性动画设计的巧妙和灵活之处。后几篇文章着重应用。</p>
 <p><strong>作为一个有责任心的程序员</strong>，我希望通过这几篇文章，能帮助小伙伴们更深入理解Android属性动画，而不仅仅局限在使用上。</p>
 
