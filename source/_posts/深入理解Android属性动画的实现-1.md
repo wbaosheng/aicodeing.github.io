@@ -8,14 +8,11 @@ category: Android
 comments: true
 ---
 ### 导读
-在文章开头我们先简单回忆一下常用的属性动画 `API` 有哪些？
+在文章开头我们先简单回忆一下常用的属性动画 `API` 有哪些？  
 1.动画相关的类:
-
 `ObjectAnimator`,`ValueAnimator`,`Property`,`PropertyValuesHolder`,`Keyframe`,`Keyframes`,`TimeInterpolator`,`TypeEvaluator`
-
-在剖析过程中我们会解析相关类的作用和实现方式
-
-2.常用的 `属性动画` 方法:  
+在剖析过程中我们会解析相关类的作用和实现方式  
+2.常用的 `属性动画` 方法:
 
 ```java
 ObjectAnimator.ofInt()
@@ -25,7 +22,6 @@ ObjectAnimator.ofObject()
 ObjectAnimator.ofPropertyValuesHolder()
 ```
 下面我们以一个常用的方法 `ObjectAnimator.ofInt()` 为切入点层层深入解析属性动画的创建过程。
-
 ### 动画的创建
 早期版本的属性动画 `ofInt` 方法有两个实现，到Android O 为止 已经有 4 个实现了。
 主要就是增加了 `Path` 参数。我们这里并不去解析新方法，因为它的实现方式和最基本的方法相同。
@@ -42,10 +38,9 @@ public static <T> ObjectAnimator ofInt(T target, Property<T, Integer> property, 
         return anim;
     }
 ```
-_注意:我这里以Android-25 源码为代码源。_
-
+_注意:我这里以Android-25 源码为代码源。_  
 上述代码中`ofInt` 方法的第一行均是 `创建 ObjectAnimator 对象`。但分别使用了两种构造方式。
-下面我们探索一下 `ObjectAnimator ` 的构造方法
+下面我们探索一下 `ObjectAnimator ` 的构造方法:
 
 ```java
 //无参构造
@@ -63,7 +58,8 @@ private ObjectAnimator(Object target, String propertyName) {
     }
 ```
 无参构造方法没有什么可说的。另外两个构造方法第一行代码都是
-```
+
+```java
 setTarget(target);
 ```
 该`setTarget`方法的作用是记录需要做动画的对象，方便以后对该对象的相关属性做更改。
@@ -83,48 +79,37 @@ setTarget(target);
         mInitialized = false;
     }
 ```
-我们这里的调用情形，`mValues `肯定为null，不会走 `if`分支，剩下的就是简单的记录我们设置的`propertyName`用`mPropertyName `保持。
-如果`mValues `不为空的情况下，会更新 `mValues`的第一个元素的属性值，并更新对应的map集合
-
-2.我们再看看`Property `参数的构造方法的`setProperty`方法，同样也是简单的记录`mProperty`和`mPropertyName`
-
-那么 这个`Property `是何方神圣？
-
+我们这里的调用情形，`mValues `肯定为null，不会走 `if`分支，剩下的就是简单的记录我们设置的`propertyName`用`mPropertyName `保持。如果`mValues `不为空的情况下，会更新 `mValues`的第一个元素的属性值，并更新对应的map集合  
+2.我们再看看`Property `参数的构造方法的`setProperty`方法，同样也是简单的记录`mProperty`和`mPropertyName`  
+*那么 这个`Property `是何方神圣？*
 ### Property 解析
 ```java
 public abstract class Property<T, V> {
     private final String mName;
     private final Class<V> mType;
-
     public static <T, V> Property<T, V> of(Class<T> hostType, Class<V> valueType, String name) {
         return new ReflectiveProperty<T, V>(hostType, valueType, name);
     }
-
     public Property(Class<V> type, String name) {
         mName = name;
         mType = type;
     }
-
     public boolean isReadOnly() {
         return false;
     }
-
     public void set(T object, V value) {
         throw new UnsupportedOperationException("Property " + getName() +" is read-only");
     }
-
     public abstract V get(T object);
-
     public String getName() {
         return mName;
     }
-
     public Class<V> getType() {
         return mType;
     }
 }
 ```
-这是一个 `abstract`修饰的类。这个类很简单，就是定义了一些需要被子类实现的方法。(为了减小博客的字数，我这里隐去源码中的相关注释，如有需要请自行到源码中查看)
+这是一个 `abstract`修饰的类。这个类很简单，就是定义了一些需要被子类实现的方法。*(为了减小博客的字数，我这里隐去源码中的相关注释，如有需要请自行到源码中查看)*
 通过对注释的理解我们知道 这个类的注意功能就是`代表`需要动画的`属性`,实现这个类有一些先决条件需要满足: 
 必须满足一下三个条件中的一个   
 1.被 `Property ` 代表的类的属性必须有一个`public`的无参的`get`方法，和一个可选的`set`方法，`set`方法的参数和`get`方法的返回值一个类型  
@@ -132,10 +117,11 @@ public abstract class Property<T, V> {
 3.一个`public`的 属性 `name`。  
 假如有 `get/is`方法，但是没有`set`方法，那么这个 `Property` 是一个只读的属性。
 `set` 方法必须实现，都在抛出异常
-到目前为止我们了解了 动画初始化时会初始化 `mPropertyName`变量，记录属性的名称；或初始化`mProperty`，来保持对属性的访问能力和更新能力。
-
+到目前为止我们了解了 动画初始化时会初始化 `mPropertyName`变量，记录属性的名称；或初始化`mProperty`，来保持对属性的访问能力和更新能力。  
+*这里说明一下，常规情况下需要满足这三个中一个即可,如果我们又其他方式来变量属性值，而且也在 `Property` 中做了相应的映射关系，不满足也可以。这个在之后文章中自定义属性动画中可以看出*  
 我们回到之前的 `ofInt`方法
 紧接着 执行了 代码
+
 ```java
  anim.setIntValues(values);
 ```
@@ -161,7 +147,7 @@ public abstract class Property<T, V> {
 ```java
  public static PropertyValuesHolder ofInt(Property<?, Integer> property, int... values) {
         return new IntPropertyValuesHolder(property, values);
-    }
+}
  
 public IntPropertyValuesHolder(Property property, int... values) {
             super(property);
@@ -169,18 +155,17 @@ public IntPropertyValuesHolder(Property property, int... values) {
             if (property instanceof  IntProperty) {
                 mIntProperty = (IntProperty) mProperty;
             }
-        }
+ }
  @Override
-        public void setIntValues(int... values) {
+public void setIntValues(int... values) {
             super.setIntValues(values);
             mIntKeyframes = (Keyframes.IntKeyframes) mKeyframes;
-        }
+}
  public void setIntValues(int... values) {
         mValueType = int.class;
         mKeyframes = KeyframeSet.ofInt(values);
-    }        
+ }        
 ```
-
 该方法主要的作用就是创建一个`PropertyValuesHolder`,保持属性`Property`
 并将 属性值保存成`关键帧`，我们关注核心如何生成关键帧 
  
@@ -202,7 +187,7 @@ public static KeyframeSet ofInt(int... values) {
     }
 ```
 上述代码是生成关键帧的逻辑:
-1.判断值得个数，如果只有一个值。那么分配长度为2的`IntKeyframe `数组,并将值保持在第二个位置。
+1.判断值的个数，如果只有一个值。那么分配长度为2的`IntKeyframe `数组,并将值保持在第二个位置。
 2.如果多于一个值，会分配 值个数 长度的数组，将每一个数值都保持在数组对应的位置。
 需要注意的是:除了第一帧，其他帧都分配了`fraction`,这个系数有这些数字的传入顺序决定。假如我们传入3个值，第一帧的系数默认为0，第二帧的系数为0.5，最后一个值得系数是1
 。这个系数在后来动画的执行中为生成相应的属性值起到关键作用。
@@ -229,10 +214,9 @@ public void setValues(PropertyValuesHolder... values) {
 ```
 主要功能：  
 1.保存前面生成的 `PropertyValuesHolder `,用 `mValues`持有引用。  
-2.将 `PropertyValuesHolder `数组按照属性名为key，`PropertyValuesHolder `为值保存至map中，并标记为初始化` mInitialized = false`,在下一篇文章中会提到合适将标记位`mInitialized `置为 `true`.
+2.将 `PropertyValuesHolder `数组按照属性名为key，`PropertyValuesHolder `为值保存至map中，并标记为初始化` mInitialized = false`,在下一篇文章中会提到何时将标记位`mInitialized `置为 `true`
 
-到目前为止我们已经分析完了 `ObjectAnimator.ofInt`方法。
-
+到目前为止我们已经分析完了 `ObjectAnimator.ofInt`方法。  
 其中有几个为解释到的类:  
 1.PropertyValuesHolder  
 2.Keyframe
@@ -254,7 +238,7 @@ private TypeEvaluator mEvaluator;
 	ofObject
 	ofKeyframe
 	
-这些 `of`方法我们前面解析过 ofInt 这里不再展开解释。
+这些 `of`方法我们前面解析过 `ofInt` 这里不再展开解释。
 看到 `mSetter`和`mGetter`方法，我们联想到这个类肯定会操作 动画对象的属性。果不其然，让我们找到了 `setupSetter`和`setupGetter` 方法
 
 ```java
@@ -266,7 +250,7 @@ private TypeEvaluator mEvaluator;
     /**
      * Utility function to get the getter from targetClass
      */
-    private void setupGetter(Class targetClass) {
+private void setupGetter(Class targetClass) {
         mGetter = setupSetterOrGetter(targetClass, sGetterPropertyMap, "get", null);
     }
 ```
@@ -307,15 +291,13 @@ void setAnimatedValue(Object target) {
 1.持有 `Property` 用于获取更新属性的能力。  
 2.持有 `mPropertyName` 通过反射获取get set 方法，获取更新属性的能力  
 3.计算属性的值  
-4.更新属性  
-
+4.更新属性    
 所以 `PropertyValuesHolder`就是控制动画对象属性的关键。所以也很容易理解，为什么所有的属性动画的value都转化成`PropertyValuesHolder `来操作.
 
 ### Keyframe
-下面我们在详细了解下何为关键帧，它是如何运作的。
-
+下面我们在详细了解下何为关键帧，它是如何运作的。  
 先看几个关于`关键帧`的类 `Keyframe`,`Keyframes` 以及它们的子类  
-`Keyframe`顾名思义就是记录关键帧数据。他默认有`三个`实现类`IntKeyframe`,`FloatKeyframe`,`ObjectKeyframe`,当然我们也能`继承Keyframe`实现自己的关键帧类型。不过大部分情况，提供的这三种方式已经够用了。  
+`Keyframe`顾名思义就是记录关键帧数据,他默认有`三个`实现类`IntKeyframe`,`FloatKeyframe`,`ObjectKeyframe`,当然我们也能`继承Keyframe`实现自己的关键帧类型。不过大部分情况，提供的这三种方式已经够用了。  
 `Keyframe` 有三个重要的`属性值`:  
 1.`mHasValue` 用于记录关键帧是否初始化了值，以 子类`IntKeyframe`为例，它有两个构造方法:
 
